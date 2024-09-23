@@ -35,7 +35,7 @@ const logoff = (req, res) => {
 };
 
 const logonShow = (req, res) => {
-    console.log(req.user);
+    // console.log(req.user);
     if (req.user) {
         return res.redirect("/");
     }
