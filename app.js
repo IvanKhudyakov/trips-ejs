@@ -2,12 +2,13 @@ const express = require("express");
 require("express-async-errors");
 const cookieParser = require("cookie-parser");
 const app = express();
-
+const tripRouter = require('./routes/trips');
 app.set("view engine", "ejs");
 app.use(require("body-parser").urlencoded({ extended: true }));
 
 require("dotenv").config();
 const session = require("express-session");
+const flash = require("connect-flash");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const url = process.env.MONGO_URI;
 
@@ -43,13 +44,9 @@ const csrf_options = {
     development_mode: csrf_development_mode,
 };
 const csrf_middleware = csrf(csrf_options);
-// if (app.get("env") === "production") {
-//     app.set("trust proxy", 1); // trust first proxy
-//     sessionParms.cookie.secure = true; // serve secure cookies
-// }
 
 app.use(session(sessionParms));
-app.use(require("connect-flash")());
+app.use(flash());
 
 
 const passport = require("passport");
@@ -64,16 +61,13 @@ app.use(require("./middleware/storeLocals"));
 // app.use(csrf_middleware(req,res,next));
 
 //routes
-app.get("/", csrf_middleware, (req, res) => {
-    res.render("index");
-});
+app.use("/", csrf_middleware, tripRouter);
 app.use("/sessions",csrf_middleware,  require("./routes/sessionRoutes"));
-
 
 // secret word handling
 // let secretWord = "syzygy";
-const secretWordRouter = require("./routes/secretWord");
-app.use("/secretWord", csrf_middleware, secretWordRouter);
+// const secretWordRouter = require("./routes/secretWord");
+// app.use("/secretWord", csrf_middleware, secretWordRouter);
 
 
 app.use(csrf_middleware, (req, res) => {
