@@ -57,8 +57,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(require("./middleware/storeLocals"));
 
-
-// app.use(csrf_middleware(req,res,next));
+//middleware for tests
+app.use((req, res, next) => {
+    if (req.path == "/multiply") {
+      res.set("Content-Type", "application/json");
+    } else {
+      res.set("Content-Type", "text/html");
+    }
+    next();
+  });
+  
 
 //routes
 app.use("/", csrf_middleware, tripRouter);
