@@ -63,7 +63,17 @@ app.use(require("./middleware/storeLocals"));
 //routes
 app.use("/", csrf_middleware, tripRouter);
 app.use("/sessions",csrf_middleware,  require("./routes/sessionRoutes"));
-
+//multiply api
+app.get("/multiply", (req, res) => {
+    const result = req.query.first * req.query.second;
+    if (result.isNaN) {
+      result = "NaN";
+    } else if (result == null) {
+      result = "null";
+    }
+    res.json({ result: result });
+  });
+  
 // secret word handling
 // let secretWord = "syzygy";
 // const secretWordRouter = require("./routes/secretWord");
@@ -80,10 +90,14 @@ app.use(csrf_middleware, (err, req, res, next) => {
 });
 
 const port = process.env.PORT || 3000;
-
+let mongoURL = process.env.MONGO_URI;
+if (process.env.NODE_ENV == "test") {
+    mongoURL = process.env.MONGO_URI_TEST;
+  }
+  
 const start = async () => {
     try {
-        await require("./db/connect")(process.env.MONGO_URI);
+        await require("./db/connect")(mongoURL);
         app.listen(port, () =>
             console.log(`Server is listening on port ${port}...`)
         );
