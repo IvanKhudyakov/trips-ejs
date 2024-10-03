@@ -95,10 +95,10 @@ if (process.env.NODE_ENV == "test") {
     mongoURL = process.env.MONGO_URI_TEST;
   }
   
-const start = async () => {
+const start = () => {
     try {
-        await require("./db/connect")(mongoURL);
-        app.listen(port, () =>
+        require("./db/connect")(mongoURL);
+        return app.listen(port, () =>
             console.log(`Server is listening on port ${port}...`)
         );
     } catch (error) {
@@ -107,3 +107,5 @@ const start = async () => {
 };
 
 start();
+
+module.exports = {app};
