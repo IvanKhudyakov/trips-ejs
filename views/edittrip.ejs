@@ -1,0 +1,33 @@
+<%- include('partials/head.ejs') %>
+<%- include('partials/header.ejs') %>
+        <form method="POST" action="<%= trip ? '/trips/update/' + trip._id : '/trips' %>">
+            <input type="hidden" name="_csrf" value="<%= _csrf %>">
+            <div>
+                <label for="destination">Destination:</label>
+                <input type="text" name="destination" <% if (trip) { %> value="<%= trip.destination %>" <% } %>/>
+            </div>
+            <div>
+                <label for="startDate">Start Date:</label>
+                <!-- TODO: implement type = "date" -->
+                <input type="date" name="startDate" <% if (trip) { %> value="<%= convertDate(trip.startDate) %>" <% } %>/> 
+                <!-- <input type="text" id="startDate1" />  -->
+            </div>
+            <div>
+                <label for="duration">Duration:</label>
+                <input type="text" name="duration" <% if (trip) { %> value="<%= trip.duration %>" <% } %> "/>
+            </div>
+            <div>
+                <label for="reason">Trip reason:</label>
+                <select name="reason">
+                    <option value="business" <% if (trip && trip.reason === 'business') { %> selected <% } %>>business</option>
+                    <option value="leasure" <% if (trip && trip.reason === 'leasure') { %> selected <% } %>>leasure</option>
+                </select>
+            </div>
+            <div>
+                <button type="submit"><%= trip ? 'Update' : 'Add' %> Trip</button>
+                <a href="/trips">
+                    <button type="button" id="edit-cancel">Cancel</button>
+                </a>
+            </div>
+        </form>
+<%- include("partials/footer.ejs") %>

@@ -1,0 +1,51 @@
+<%- include('partials/head.ejs') %>
+    <%- include('partials/header.ejs') %>
+        <% if (user) { %>
+            <!-- <a href="https://google.com">google</a> -->
+            <div id="trips">
+                <p id="trips-message"></p>
+                <table id="trips-table">
+                    <tr id="trips-table-header">
+                        <th>Destination</th>
+                        <th>Start Date</th>
+                        <th>Duration</th>
+                        <th>Trip reason</th>
+                        <th>Actions</th>
+                        <th colspan="2"></th>
+                    </tr>
+                    <% trips.forEach(trip => { %>
+                        <tr>
+                            <td><%= trip.destination %></td>
+                            <td><%= convertDate(trip.startDate) %></td>
+                            <td><%= trip.duration %></td>
+                            <td><%= trip.reason %></td>
+                            <td>
+                                <!-- <a href="/trips/edit/<%= trip.id %>">
+                                    <button type="button" id="edit-trip">Edit trip</button>
+                                    <input type="hidden" name="_csrf" value="<%= _csrf %>">
+                                </a> -->
+                                <form method="GET" action="/trips/edit/<%= trip.id %>">
+                                    <button type="submit" name="edit-trip">Edit trip</button>
+                                    <input type="hidden" name="_csrf" value="<%= _csrf %>">
+                                </form>
+                            </td>
+                            <td>
+                                <form method="POST" action="/trips/delete/<%= trip.id %>">
+                                    <button type="submit" name="delete-trip">Delete trip</button>
+                                    <input type="hidden" name="_csrf" value="<%= _csrf %>">
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </table>
+                <td>
+                <a href="/trips/new">
+                    <button type="button" id="add-trip">Add trip</button>
+                    <input type="hidden" name="_csrf" value="<%= _csrf %>">
+                </a>
+            </div>
+            <% } else { %>
+                <a href="/sessions/logon">Click this link to logon.</a>
+                <a href="/sessions/register">Click this link to register.</a>
+                <% } %>
+                    <%- include("partials/footer.ejs") %>
