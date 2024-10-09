@@ -19,14 +19,14 @@ const testUserPassword = faker.internet.password();
 const factory = FactoryBot.factory;
 const factoryAdapter = new FactoryBot.MongooseAdapter();
 factory.setAdapter(factoryAdapter);
-factory.define("trip", Trip, {
+factory.define("trip2", Trip, {
     destination: () => faker.location.city(),
     startDate: () => faker.date.future(),
     duration: () => faker.number.int({ min: 3, max: 15 }),
     reason: () =>
         ["business", "leasure"][Math.floor(2 * Math.random())], // random one of these
 });
-factory.define("user", User, {
+factory.define("user2", User, {
     name: () => faker.person.fullName(),
     email: () => faker.internet.email(),
     password: () => faker.internet.password(),
@@ -38,8 +38,8 @@ const seed_db = async () => {
         const mongoURL = process.env.MONGO_URI_TEST;
         await Trip.deleteMany({}); // deletes all job records
         await User.deleteMany({}); // and all the users
-        testUser = await factory.create("user", { password: testUserPassword });
-        await factory.createMany("trip", 20, { createdBy: testUser._id }); // put 30 job entries in the database.
+        testUser = await factory.create("user2", { password: testUserPassword });
+        await factory.createMany("trip2", 20, { createdBy: testUser._id }); // put 30 job entries in the database.
     } catch (e) {
         console.log("database error");
         console.log(e.message);

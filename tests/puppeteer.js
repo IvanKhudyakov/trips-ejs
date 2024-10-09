@@ -107,6 +107,21 @@ describe("jobs-ejs puppeteer test", function () {
             await page.waitForSelector('table[id="trips-table"]');
             await page.waitForSelector('button[name="edit-trip"]');
 
+            await page.click('a[href="/trips/new"]');
+            this.destination = await page.waitForSelector('input[name="destination"]');
+            this.startDate = await page.waitForSelector('input[name="startDate"]');
+            this.duration = await page.waitForSelector('input[name="duration"]');
+            this.reason = await page.waitForSelector('select[name="reason"]');
+            await this.destination.type('Brest');
+            await this.startDate.type('12/01/2024');
+            await this.duration.type('5');
+            await this.reason.select('business');
+
+            await page.click('button[name="update-add"]');
+            await page.waitForNavigation();
+
+
+
             const createdTrip = await Trip.findOne({destination: 'Brest'}).sort({createdAt:1});
             console.log(createdTrip);
             
