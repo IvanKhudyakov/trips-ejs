@@ -5,13 +5,14 @@ const FactoryBot = require("factory-bot");
 require("dotenv").config();
 
 const testUserPassword = faker.internet.password();
+
 const factory = FactoryBot.factory;
 const factoryAdapter = new FactoryBot.MongooseAdapter();
 factory.setAdapter(factoryAdapter);
 factory.define("trip", Trip, {
   destination: () => faker.location.city(),
-  duration: () => faker.number.int({ min: 3, max: 15 }),
   startDate: () => faker.date.future(),
+  duration: () => faker.number.int({ min: 3, max: 15 }),
   reason: () =>
     ["business", "leasure"][Math.floor(2 * Math.random())], // random one of these
 });

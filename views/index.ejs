@@ -20,10 +20,6 @@
                             <td><%= trip.duration %></td>
                             <td><%= trip.reason %></td>
                             <td>
-                                <!-- <a href="/trips/edit/<%= trip.id %>">
-                                    <button type="button" id="edit-trip">Edit trip</button>
-                                    <input type="hidden" name="_csrf" value="<%= _csrf %>">
-                                </a> -->
                                 <form method="GET" action="/trips/edit/<%= trip.id %>">
                                     <button type="submit" name="edit-trip">Edit trip</button>
                                     <input type="hidden" name="_csrf" value="<%= _csrf %>">
